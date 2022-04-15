@@ -1,0 +1,7 @@
+logs
+.idea
+/db
+docker-compose.override.yaml
+.env
+/redis
+/temp
