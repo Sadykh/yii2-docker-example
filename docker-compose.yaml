@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  php:
+    container_name: changeme_php
+    restart: always
+    image: sadykh/php:7.4
+    volumes:
+      - ./src:/var/www/html:rw
+      - ./db:/var/lib/mysql
+      - ./supervisor/:/etc/supervisor/conf.d/
+  nginx:
+    container_name: changeme_nginx
+    restart: always
+    image: nginx:latest
+    volumes:
+      - ./src:/var/www/html:rw
+      - ./nginx/conf.d:/etc/nginx/conf.d/:rw
+      - ./nginx/logs:/var/log/nginx/:rw
+    ports:
+      - 84:80
+  mariadb:
+    container_name: changeme_db
+    image: sadykh/mariadb-utf8:latest
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./db:/var/lib/mysql:rw

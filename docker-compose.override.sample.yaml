@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  php:
+    image: sadykh/php:7.4
+    environment:
+      XDEBUG_CONFIG: "remote_host=host.docker.internal remote_enable=1"
+      PHP_IDE_CONFIG: "serverName=Docker"
+    networks:
+      - internal
+    volumes:
+      - ./supervisor_local.conf:/etc/supervisor/conf.d/supervisor.conf
+  mariadb:
+    ports:
+      - 3306:3306
+    networks:
+      - internal
+  nginx:
+    depends_on:
+      - php
+    networks:
+      - internal
+networks:
+  internal:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.220.0/28
